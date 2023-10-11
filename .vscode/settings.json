@@ -2,5 +2,6 @@
   "files.watcherExclude": {
     "**/node_modules/*/**": false,
     "**/node_modules/[!@]*/**/*": true
-  }
+  },
+  "liveServer.settings.port": 5501
 }
