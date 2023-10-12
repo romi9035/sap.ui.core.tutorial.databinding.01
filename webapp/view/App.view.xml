@@ -1,116 +1,55 @@
-<mvc:View
-    controllerName="sap.ui.demo.db.controller.App"
-    xmlns="sap.m"
-    xmlns:form="sap.ui.layout.form"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns:l="sap.ui.layout"
->
-    <Panel
-        headerText="{i18n>panel1HeaderText}"
-        class="sapUiResponsiveMargin"
-        width="auto"
-    >
-        <form:SimpleForm
-            editable="true"
-            layout="ColumnLayout"
-        >
-            <Label text="{i18n>firstName}" />
-            <Input
-                value="{name>/firstName}"
-                valueLiveUpdate="true"
-                width="200px"
-                enabled="{/enabled}"
-            />
-            <Label text="{i18n>lastName}" />
-            <Input
-                value="{name>/lastName}"
-                valueLiveUpdate="true"
-                width="200px"
-                enabled="{/enabled}"
-            />
-            <Label text="{i18n>enabled}" />
-            <CheckBox selected="{name>/enabled}" />
+<mvc:View xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" controllerName="sap.ui.demo.db.controller.App">
+    <Panel headerText="{i18n>panel1HeaderText}" class="sapUiResponsiveMargin" width="auto">
+        <form:SimpleForm editable="true" layout="ColumnLayout">
+            <Label text="{i18n>firstName}"/>
+            <Input value="{name>/firstName}" valueLiveUpdate="true" width="200px" enabled="{/enabled}"/>
+            <Label text="{i18n>lastName}"/>
+            <Input value="{name>/lastName}" valueLiveUpdate="true" width="200px" enabled="{/enabled}"/>
+            <Label text="{i18n>enabled}"/>
+            <CheckBox selected="{name>/enabled}"/>
         </form:SimpleForm>
     </Panel>
-    <Panel
-        headerText="{i18n>panel2HeaderText}"
-        class="sapUiResponsiveMargin"
-        width="auto"
-    >
+    <Panel headerText="{i18n>panel2HeaderText}" class="sapUiResponsiveMargin" width="auto">
         <content>
             <l:HorizontalLayout>
                 <l:VerticalLayout>
-                    <Label
-                        labelFor="address"
-                        text="{i18n>address}:"
-                    />
-                    <FormattedText
-                        class="sapUiSmallMarginBottom"
-                        htmlText="{name>/address/street}&lt;br>{name>/address/zip} {name>/address/city}&lt;br>{name>/address/country}"
-                        id="address"
-                        width="200px"
-                    />
-                    <Link
-                        href="{
-                    parts: [
-                        'name>/firstName',
-                        'name>/lastName'
-                    ],
-                    formatter: '.formatMail'
-                }"
-                        text="{i18n>sendEmail}"
-                    />
+                    <Label labelFor="address" text="{i18n>address}:"/>
+                    <FormattedText class="sapUiSmallMarginBottom" htmlText="{name>/address/street}&lt;br&gt;{name>/address/zip} {name&gt;/address/city}&lt;br&gt;{name>/address/country}" id="address" width="200px"/>
+                    <l:content>
+                        <Link xmlns="sap.m" href="{                     parts: [                         'name>/firstName',                         'name&gt;/lastName'                     ],                     formatter: '.formatMail'                 }" text="{i18n>sendEmail}"/>
+                    </l:content>
                 </l:VerticalLayout>
                 <l:VerticalLayout>
-                    <Label
-                        labelFor="salesAmount"
-                        text="{i18n>salesAmount}:"
-                    />
-                    <Input
-                        description="{name>/currencyCode}"
-                        enabled="{name>/enabled}"
-                        id="salesAmount"
-                        value="{
-							parts: [
-								{path: 'name>/salesAmount'},
-								{path: 'name>/currencyCode'}
-							],
-							type: 'sap.ui.model.type.Currency',
-							formatOptions: {showMeasure: false}
-						}"
-                        width="200px"
-                    />
+                    <Label labelFor="salesAmount" text="{i18n>salesAmount}:"/>
+                    <Input description="{name>/currencyCode}" enabled="{name>/enabled}" id="salesAmount" value="{parts: [{path: 'name>/salesAmount'},{path: 'name&gt;/currencyCode'}],type: 'sap.ui.model.type.Currency',        formatOptions: {showMeasure: false}       }" width="200px"/>
                 </l:VerticalLayout>
             </l:HorizontalLayout>
         </content>
     </Panel>
     <Panel headerText="{i18n>panel3HeaderText}" class="sapUiResponsiveMargin" width="auto">
-		<List headerText="{i18n>productListTitle}" items="{products>/Products}">
-			<items>
-				<ObjectListItem title="{products>ProductName}"
-					number="{
-						parts: [
-							{path: 'products>UnitPrice'},
-							{path: 'name>/currencyCode'}
-						],
-						type: 'sap.ui.model.type.Currency',
-						formatOptions: { showMeasure: false }
-					}"
-					numberUnit="{/currencyCode}">
-					<attributes>
-						<ObjectAttribute text="{products>QuantityPerUnit}"/>
-						<ObjectAttribute title="{i18n>stockValue}"
-							text="{
-								parts: [
-									{path: 'products>UnitPrice'},
-									{path: 'products>UnitsInStock'},
-									{path: 'name>/currencyCode'}
-								],
-								formatter: '.formatStockValue'
-							}"/>
-					</attributes>
-				</ObjectListItem>
-			</items>
-		</List>
-	</Panel>
+        <List headerText="{i18n>productListTitle}" items="{     path: 'products>/Products',     factory: '.productListFactory'    }">
+        <dependents>
+        <core:Fragment fragmentName="sap.ui.demo.db.view.ProductSimple" type="XML"/>
+				<core:Fragment fragmentName="sap.ui.demo.db.view.ProductExtended" type="XML"/>
+        </dependents>
+        </List>
+    </Panel>
+    <Panel headerText="{i18n>panel4HeaderText}" class="sapUiResponsiveMargin" width="auto" id="productDetailsPanel">
+        <content>
+            <form:SimpleForm xmlns:sap.ui.core="sap.ui.core" editable="true" layout="ColumnLayout">
+                <Label text="{i18n>ProductID}"/>
+                <Input value="{products>ProductID}"/>
+                <Label text="{i18n>ProductName}"/>
+                <Input value="{products>ProductName}"/>
+                <Label text="{i18n>QuantityPerUnit}"/>
+                <Input value="{products>QuantityPerUnit}"/>
+                <Label text="{i18n>UnitPrice}"/>
+                <Input value="{products>UnitPrice}"/>
+                <Label text="{i18n>UnitsInStock}"/>
+                <Input value="{products>UnitsInStock}"/>
+                <Label text="{i18n>Discontinued}"/>
+                <CheckBox xmlns="sap.m" selected="{products>Discontinued}"/>
+            </form:SimpleForm>
+        </content>
+    </Panel>
 </mvc:View>
